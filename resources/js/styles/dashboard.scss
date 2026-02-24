@@ -1,0 +1,954 @@
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD — DARK CONSTRUCTIVIST (matches Login aesthetic)
+// Black + Red + JetBrains Mono + Bebas Neue
+// ═══════════════════════════════════════════════════════════
+
+$black:      #0a0a0a;
+$black2:     #0f0f0f;
+$panel:      #111111;
+$panel2:     #161616;
+$border:     #1e1e1e;
+$border2:    #252525;
+$red:        #e8341c;
+$red-dark:   #b5200c;
+$red-pale:   rgba(232, 52, 28, 0.08);
+$red-glow:   rgba(232, 52, 28, 0.15);
+$white:      #f5f0e8;
+$muted:      #444;
+$muted2:     #666;
+$green:      #4caf7d;
+$yellow:     #f0c040;
+$blue:       #4a9eff;
+
+// ── ANIMATIONS ────────────────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+@keyframes barFill {
+  from { width: 0; }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scanline {
+  0%   { top: 0; }
+  100% { top: 100%; }
+}
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+// ── LAYOUT ────────────────────────────────────────────────
+.dash {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: $black;
+  font-family: 'JetBrains Mono', monospace;
+  color: $white;
+
+  // ── SIDEBAR ─────────────────────────────────────────────
+  &__sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: $panel;
+    border-right: 1px solid $border;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    animation: slideInLeft 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    z-index: 10;
+
+    // red left accent bar
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: $red;
+    }
+
+    // scanline effect
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(transparent, rgba(232,52,28,0.03), transparent);
+      animation: scanline 6s linear infinite;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      position: fixed;
+      left: -240px;
+      top: 0; bottom: 0;
+      transition: left 0.3s ease;
+      z-index: 100;
+
+      &--open {
+        left: 0;
+        box-shadow: 4px 0 40px rgba(0,0,0,0.8);
+      }
+    }
+  }
+
+  &__logo {
+    padding: 24px 20px 20px 28px;
+    border-bottom: 1px solid $border;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &-mark {
+      width: 28px;
+      height: 28px;
+      background: $red;
+      position: relative;
+      flex-shrink: 0;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: $black;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+      }
+    }
+
+    &-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: $white;
+    }
+
+    &-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $red;
+      margin-left: auto;
+      animation: pulse 1.5s infinite;
+    }
+  }
+
+  &__user {
+    padding: 16px 20px 16px 28px;
+    border-bottom: 1px solid $border;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &-avatar {
+      width: 32px;
+      height: 32px;
+      background: $red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      color: $white;
+      flex-shrink: 0;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $green;
+        border: 2px solid $panel;
+        bottom: -2px;
+        right: -2px;
+      }
+    }
+
+    &-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    &-name {
+      font-size: 11px;
+      color: $white;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-role {
+      font-size: 9px;
+      color: $muted2;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+  }
+
+  // ── NAV ───────────────────────────────────────────────
+  &__nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar { width: 2px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $border2; }
+  }
+
+  &__nav-section {
+    margin-bottom: 8px;
+  }
+
+  &__nav-label {
+    font-size: 8px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: $muted;
+    padding: 8px 28px 6px;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 20px 11px 26px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    margin-left: 2px; // offset for sidebar left bar
+
+    &:hover {
+      background: rgba(255,255,255,0.02);
+      color: $white;
+
+      .dash__nav-icon { color: $red; }
+    }
+
+    &--active {
+      background: $red-pale;
+      border-left-color: $red;
+      color: $white;
+
+      .dash__nav-icon { color: $red; }
+      .dash__nav-text { color: $white; }
+    }
+  }
+
+  &__nav-icon {
+    font-size: 14px;
+    color: $muted2;
+    width: 16px;
+    text-align: center;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+
+  &__nav-text {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: $muted2;
+    transition: color 0.15s;
+    flex: 1;
+  }
+
+  &__nav-badge {
+    font-size: 9px;
+    background: $red;
+    color: $white;
+    padding: 2px 6px;
+    letter-spacing: 1px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  &__sidebar-bottom {
+    padding: 16px 20px 16px 28px;
+    border-top: 1px solid $border;
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    color: $muted2;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 10px 0;
+    transition: color 0.15s;
+    background: none;
+    border: none;
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+
+    &:hover { color: $red; }
+
+    span:first-child { font-size: 14px; }
+  }
+
+  // ── MAIN AREA ─────────────────────────────────────────
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.6s ease both 0.2s;
+  }
+
+  // ── HEADER ─────────────────────────────────────────────
+  &__header {
+    height: 56px;
+    min-height: 56px;
+    background: $panel;
+    border-bottom: 1px solid $border;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 20px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, $red, transparent 40%);
+      opacity: 0.4;
+    }
+  }
+
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+
+    span {
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: $muted2;
+      transition: background 0.2s;
+    }
+
+    &:hover span { background: $white; }
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: $muted2;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    span { color: $muted; }
+    strong { color: $white; font-weight: 400; }
+  }
+
+  &__header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__header-time {
+    font-size: 10px;
+    color: $muted2;
+    letter-spacing: 2px;
+    font-family: 'JetBrains Mono', monospace;
+
+    @media (max-width: 640px) { display: none; }
+  }
+
+  &__header-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid $border2;
+    background: $black2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    position: relative;
+
+    &:hover {
+      border-color: $red;
+      background: $red-pale;
+    }
+
+    &--notif::after {
+      content: '';
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: $red;
+      top: 4px; right: 4px;
+      border: 1px solid $panel;
+    }
+  }
+
+  &__header-avatar {
+    width: 32px;
+    height: 32px;
+    background: $red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:hover { opacity: 0.8; }
+  }
+
+  // ── CONTENT ────────────────────────────────────────────
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+    background: $black;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $border2; }
+
+    @media (max-width: 640px) {
+      padding: 20px 16px;
+    }
+  }
+
+  // ── PAGE TITLE ─────────────────────────────────────────
+  &__page-header {
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s ease both;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__page-eyebrow {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: $red;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 16px; height: 1px;
+      background: $red;
+    }
+  }
+
+  &__page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    line-height: 1;
+    color: $white;
+
+    span { color: $red; }
+  }
+
+  &__page-meta {
+    font-size: 10px;
+    color: $muted2;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  &__header-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__btn {
+    padding: 10px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &--primary {
+      background: $red;
+      color: $white;
+      border: none;
+
+      &:hover { background: $red-dark; }
+    }
+
+    &--ghost {
+      background: none;
+      color: $muted2;
+      border: 1px solid $border2;
+
+      &:hover {
+        border-color: $red;
+        color: $white;
+      }
+    }
+  }
+
+  // ── STAT CARDS ─────────────────────────────────────────
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 500px)  { grid-template-columns: 1fr; }
+  }
+
+  &__stat {
+    background: $panel;
+    border: 1px solid $border;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.15s; }
+    &:nth-child(3) { animation-delay: 0.2s; }
+    &:nth-child(4) { animation-delay: 0.25s; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+    }
+
+    &--red::before    { background: $red; }
+    &--green::before  { background: $green; }
+    &--yellow::before { background: $yellow; }
+    &--blue::before   { background: $blue; }
+
+    &-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: $muted2;
+      margin-bottom: 12px;
+    }
+
+    &-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      letter-spacing: 2px;
+      line-height: 1;
+      color: $white;
+      animation: countUp 0.6s ease both 0.4s;
+    }
+
+    &-change {
+      font-size: 10px;
+      margin-top: 8px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &--up   { color: $green; }
+      &--down { color: $red; }
+    }
+
+    &-icon {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 20px;
+      opacity: 0.12;
+    }
+
+    &-bar {
+      margin-top: 12px;
+      height: 2px;
+      background: $border;
+      overflow: hidden;
+
+      &-fill {
+        height: 100%;
+        animation: barFill 1s cubic-bezier(0.16,1,0.3,1) both 0.5s;
+
+        &--red    { background: $red; }
+        &--green  { background: $green; }
+        &--yellow { background: $yellow; }
+        &--blue   { background: $blue; }
+      }
+    }
+  }
+
+  // ── GRID ───────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @media (max-width: 1000px) { grid-template-columns: 1fr; }
+  }
+
+  // ── PANEL ──────────────────────────────────────────────
+  &__panel {
+    background: $panel;
+    border: 1px solid $border;
+    animation: fadeUp 0.5s ease both 0.3s;
+
+    &-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid $border;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    &-title {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: $white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 6px; height: 6px;
+        background: $red;
+      }
+    }
+
+    &-action {
+      font-size: 9px;
+      color: $muted2;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      transition: color 0.15s;
+
+      &:hover { color: $red; }
+    }
+
+    &-body {
+      padding: 20px;
+    }
+  }
+
+  // ── ACTIVITY CHART (CSS bars) ───────────────────────────
+  &__chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    padding: 0 4px;
+
+    &-bar {
+      flex: 1;
+      background: $border;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.15s;
+
+      &:hover { background: $border2; }
+
+      &-fill {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        background: $red;
+        opacity: 0.7;
+        animation: barFill 0.8s cubic-bezier(0.16,1,0.3,1) both;
+        transition: opacity 0.15s;
+
+        &--active {
+          opacity: 1;
+          background: $red;
+        }
+      }
+
+      &:hover .dash__chart-bar-fill { opacity: 1; }
+
+      &-label {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 8px;
+        color: $muted;
+        letter-spacing: 1px;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &__chart-labels {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+    padding: 0 4px;
+
+    span {
+      flex: 1;
+      text-align: center;
+      font-size: 8px;
+      color: $muted;
+      letter-spacing: 1px;
+    }
+  }
+
+  // ── ACTIVITY LIST ──────────────────────────────────────
+  &__activity {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid $border;
+    animation: fadeUp 0.4s ease both;
+
+    &:last-child { border-bottom: none; }
+
+    &:nth-child(1) { animation-delay: 0.4s; }
+    &:nth-child(2) { animation-delay: 0.5s; }
+    &:nth-child(3) { animation-delay: 0.6s; }
+    &:nth-child(4) { animation-delay: 0.7s; }
+  }
+
+  &__activity-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+
+    &--red    { background: $red; }
+    &--green  { background: $green; }
+    &--yellow { background: $yellow; }
+    &--blue   { background: $blue; }
+  }
+
+  &__activity-text {
+    flex: 1;
+
+    strong {
+      display: block;
+      font-size: 11px;
+      color: $white;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    span {
+      font-size: 9px;
+      color: $muted2;
+      letter-spacing: 1px;
+    }
+  }
+
+  &__activity-time {
+    font-size: 9px;
+    color: $muted;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  // ── QUICK STATS PANEL ──────────────────────────────────
+  &__quick {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__quick-item {
+    padding: 14px 0;
+    border-bottom: 1px solid $border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__quick-label {
+    font-size: 10px;
+    color: $muted2;
+    letter-spacing: 1.5px;
+  }
+
+  &__quick-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: $white;
+  }
+
+  &__quick-bar {
+    width: 100%;
+    height: 2px;
+    background: $border;
+    margin-top: 6px;
+    overflow: hidden;
+
+    div {
+      height: 100%;
+      animation: barFill 1s cubic-bezier(0.16,1,0.3,1) both 0.6s;
+    }
+  }
+
+  // ── TABLE ──────────────────────────────────────────────
+  &__table-wrap {
+    animation: fadeUp 0.5s ease both 0.4s;
+    background: $panel;
+    border: 1px solid $border;
+    margin-bottom: 24px;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+
+    thead tr {
+      border-bottom: 1px solid $border;
+    }
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: $muted2;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid $border;
+      color: $white;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+
+      &:last-child { white-space: nowrap; }
+    }
+
+    tbody tr {
+      transition: background 0.15s;
+      cursor: pointer;
+
+      &:hover { background: rgba(255,255,255,0.02); }
+      &:last-child td { border-bottom: none; }
+    }
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    &--success { background: rgba(76,175,125,0.12); color: $green; }
+    &--pending { background: rgba(240,192,64,0.12); color: $yellow; }
+    &--failed  { background: rgba(232,52,28,0.12);  color: $red; }
+    &--info    { background: rgba(74,158,255,0.12); color: $blue; }
+  }
+
+  // ── STATUS BAR ─────────────────────────────────────────
+  &__statusbar {
+    height: 28px;
+    min-height: 28px;
+    background: $black2;
+    border-top: 1px solid $border;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 24px;
+    font-size: 9px;
+    color: $muted;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  &__status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: $green;
+    animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 4px;
+  }
+
+  &__status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @media (max-width: 640px) {
+      &:not(:first-child) { display: none; }
+    }
+  }
+}

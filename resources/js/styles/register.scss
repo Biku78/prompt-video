@@ -1,0 +1,754 @@
+// ═══════════════════════════════════════════════
+// REGISTER PAGE — LUXURY EDITORIAL AESTHETIC
+// Cream background, gold accents, editorial serif
+// Completely different from login page
+// ═══════════════════════════════════════════════
+
+$cream: #f7f3ed;
+$cream-dark: #ede8e0;
+$ink: #1a1410;
+$gold: #b8860b;
+$gold-light: #d4a520;
+$gold-pale: rgba(184, 134, 11, 0.08);
+$brown: #6b5b45;
+$muted: #9c8d7a;
+$white: #ffffff;
+$error: #c0392b;
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes riseUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes expandWidth {
+  from { width: 0; }
+  to   { width: 48px; }
+}
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%       { transform: translateY(-15px) rotate(5deg); }
+  66%       { transform: translateY(8px) rotate(-3deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes rotateSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progressFill {
+  from { width: 0; }
+}
+
+.register {
+  min-height: 100vh;
+  background: $cream;
+  font-family: 'Outfit', sans-serif;
+  color: $ink;
+  display: grid;
+  grid-template-columns: 1fr 520px 1fr;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  // ── DECORATIVE BACKGROUND ──────────────────────
+  &__bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    &-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(184, 134, 11, 0.12);
+
+      &--lg {
+        width: 600px;
+        height: 600px;
+        top: -200px;
+        right: -200px;
+        border-width: 2px;
+        animation: rotateSlow 60s linear infinite;
+      }
+
+      &--md {
+        width: 300px;
+        height: 300px;
+        bottom: -50px;
+        left: -100px;
+        border-color: rgba(184, 134, 11, 0.08);
+      }
+
+      &--sm {
+        width: 80px;
+        height: 80px;
+        top: 30%;
+        left: 8%;
+        background: rgba(184, 134, 11, 0.04);
+        border: none;
+        animation: floatBubble 8s ease-in-out infinite;
+      }
+    }
+
+    &-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $gold;
+      opacity: 0.3;
+
+      &:nth-child(4) { top: 20%; left: 15%; animation: floatBubble 6s ease-in-out infinite; }
+      &:nth-child(5) { top: 70%; right: 12%; animation: floatBubble 9s ease-in-out infinite 2s; }
+      &:nth-child(6) { top: 45%; left: 5%;  animation: floatBubble 7s ease-in-out infinite 1s; }
+    }
+
+    &-line {
+      position: absolute;
+      background: rgba(184, 134, 11, 0.06);
+
+      &--h {
+        left: 0; right: 0;
+        height: 1px;
+        top: 40%;
+      }
+
+      &--v {
+        top: 0; bottom: 0;
+        width: 1px;
+
+        &:nth-child(7) { left: 33.33%; }
+        &:nth-child(8) { left: 66.66%; }
+      }
+    }
+  }
+
+  // ── SIDE COLUMNS ───────────────────────────────
+  &__side {
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+
+    &--left {
+      padding: 60px 0 60px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 1s ease both 0.5s;
+    }
+
+    &--right {
+      padding: 60px 60px 60px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      animation: fadeIn 1s ease both 0.5s;
+    }
+  }
+
+  &__side-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: $muted;
+    transform: rotate(180deg);
+  }
+
+  &__side-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: rgba(184, 134, 11, 0.06);
+    line-height: 1;
+    font-style: italic;
+  }
+
+  // ── CENTER COLUMN ──────────────────────────────
+  &__center {
+    position: relative;
+    z-index: 2;
+    padding: 60px 0;
+    animation: riseUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both 0.2s;
+
+    @media (max-width: 900px) {
+      padding: 40px 24px;
+    }
+  }
+
+  // ── HEADER ─────────────────────────────────────
+  &__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 48px;
+
+    &-mark {
+      width: 32px;
+      height: 32px;
+      border: 2px solid $gold;
+      transform: rotate(45deg);
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: $gold;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: $ink;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+  }
+
+  &__eyebrow {
+    font-size: 10px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 16px;
+
+    span {
+      display: inline-block;
+      width: 0;
+      height: 1px;
+      background: $gold;
+      vertical-align: middle;
+      margin: 0 8px;
+      animation: expandWidth 0.6s ease both 0.8s;
+    }
+  }
+
+  &__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: $ink;
+    line-height: 1.05;
+
+    em {
+      font-style: italic;
+      color: $gold;
+    }
+  }
+
+  &__subtitle {
+    margin-top: 12px;
+    font-size: 13px;
+    color: $muted;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  // ── STEP PROGRESS ──────────────────────────────
+  &__progress {
+    margin-bottom: 40px;
+  }
+
+  &__steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 8px;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: $muted;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+
+    &-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid $cream-dark;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    &--active {
+      color: $ink;
+
+      .register__step-num {
+        background: $ink;
+        color: $cream;
+        border-color: $ink;
+      }
+    }
+
+    &--done {
+      color: $gold;
+
+      .register__step-num {
+        background: $gold-pale;
+        border-color: $gold;
+        color: $gold;
+      }
+    }
+  }
+
+  &__step-connector {
+    width: 60px;
+    height: 1px;
+    background: $cream-dark;
+    margin: 0 8px;
+    position: relative;
+    overflow: hidden;
+
+    &--done::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $gold;
+      animation: progressFill 0.4s ease both;
+    }
+  }
+
+  // ── FORM CARD ──────────────────────────────────
+  &__card {
+    background: $white;
+    border: 1px solid rgba(184, 134, 11, 0.12);
+    border-radius: 2px;
+    padding: 40px;
+    box-shadow:
+      0 1px 0 rgba(184, 134, 11, 0.1),
+      0 20px 60px rgba(26, 20, 16, 0.06);
+    position: relative;
+
+    // gold top border
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, $gold, transparent);
+    }
+  }
+
+  // ── FORM FIELDS ────────────────────────────────
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__field {
+    margin-bottom: 24px;
+
+    label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: $brown;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    &-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border: 1px solid $cream-dark;
+      border-radius: 2px;
+      padding: 14px 16px;
+      background: $cream;
+      transition: all 0.2s;
+
+      &:focus-within {
+        border-color: $gold;
+        background: $white;
+        box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.08);
+      }
+
+      .icon {
+        font-size: 13px;
+        color: $muted;
+        margin-right: 10px;
+        flex-shrink: 0;
+        transition: color 0.2s;
+      }
+
+      &:focus-within .icon {
+        color: $gold;
+      }
+    }
+
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      color: $ink;
+      font-weight: 400;
+
+      &::placeholder {
+        color: $muted;
+        font-weight: 300;
+      }
+    }
+
+    .toggle-pass {
+      font-size: 12px;
+      color: $muted;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: color 0.2s;
+
+      &:hover { color: $gold; }
+    }
+
+    &--error {
+      .register__field-wrap {
+        border-color: $error;
+        background: rgba(192, 57, 43, 0.03);
+      }
+    }
+
+    .error-msg {
+      font-size: 11px;
+      color: $error;
+      margin-top: 5px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // ── STRENGTH METER ─────────────────────────────
+  &__strength {
+    margin-top: -12px;
+    margin-bottom: 20px;
+
+    &-bars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    &-bar {
+      flex: 1;
+      height: 2px;
+      border-radius: 99px;
+      background: $cream-dark;
+      transition: background 0.3s;
+
+      &--fill {
+        &-1 { background: $error; }
+        &-2 { background: #e67e22; }
+        &-3 { background: #f1c40f; }
+        &-4 { background: #27ae60; }
+      }
+    }
+
+    &-label {
+      font-size: 10px;
+      color: $muted;
+      letter-spacing: 1px;
+    }
+  }
+
+  // ── TERMS ──────────────────────────────────────
+  &__terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+    cursor: pointer;
+
+    &-box {
+      width: 18px;
+      height: 18px;
+      border: 1px solid $cream-dark;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      background: $cream;
+
+      &--checked {
+        background: $ink;
+        border-color: $ink;
+        color: $cream;
+      }
+
+      svg {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    &-text {
+      font-size: 12px;
+      color: $muted;
+      line-height: 1.6;
+      font-weight: 300;
+
+      a {
+        color: $gold;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+        &:hover { border-color: $gold; }
+      }
+    }
+
+    &--error .register__terms-box {
+      border-color: $error;
+    }
+
+    .error-msg {
+      font-size: 11px;
+      color: $error;
+      margin-top: 4px;
+      display: block;
+    }
+  }
+
+  // ── ACTIONS ────────────────────────────────────
+  &__actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__back-btn {
+    padding: 16px 24px;
+    border: 1px solid $cream-dark;
+    background: $cream;
+    color: $muted;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+
+    &:hover {
+      border-color: $gold;
+      color: $ink;
+    }
+  }
+
+  &__submit-btn {
+    flex: 1;
+    padding: 17px 32px;
+    background: $ink;
+    color: $cream;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(184,134,11,0.2) 50%, transparent 100%);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover {
+      background: #0f0b08;
+      &::after { opacity: 1; animation: shimmer 1.5s infinite; }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(247, 243, 237, 0.3);
+      border-top-color: $cream;
+      border-radius: 50%;
+      animation: rotateSlow 0.8s linear infinite;
+      display: inline-block;
+    }
+  }
+
+  &__next-btn {
+    width: 100%;
+    padding: 17px;
+    background: $gold;
+    color: $white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $gold-light;
+    }
+  }
+
+  // ── DIVIDER & SOCIAL ───────────────────────────
+  &__divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 28px 0;
+
+    &-line {
+      flex: 1;
+      height: 1px;
+      background: $cream-dark;
+    }
+
+    span {
+      font-size: 10px;
+      color: $muted;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__social-btn {
+    flex: 1;
+    padding: 13px;
+    border: 1px solid $cream-dark;
+    border-radius: 2px;
+    background: $cream;
+    color: $brown;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $gold;
+      color: $ink;
+      background: $white;
+    }
+  }
+
+  // ── FOOTER ─────────────────────────────────────
+  &__footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 13px;
+    color: $muted;
+    font-weight: 300;
+
+    a, button {
+      color: $gold;
+      font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      padding: 0;
+      transition: border-color 0.2s;
+
+      &:hover { border-bottom-color: $gold; }
+    }
+  }
+
+  // ── BOTTOM NAV ─────────────────────────────────
+  &__bottom {
+    grid-column: 1 / -1;
+    padding: 24px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: $muted;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-top: 1px solid $cream-dark;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.8s ease both 1.2s;
+
+    @media (max-width: 900px) {
+      padding: 20px 24px;
+    }
+  }
+}
