@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'huggingface' => [
+        'token' => env('HUGGINGFACE_API_TOKEN'),
+    ],
+
+    'pexels' => [
+        'key' => env('PEXELS_API_KEY'),
+    ],
+
 ];

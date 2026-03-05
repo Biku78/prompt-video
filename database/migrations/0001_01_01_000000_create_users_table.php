@@ -1,4 +1,4 @@
-<?php
+config('services.huggingface.token');<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

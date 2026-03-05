@@ -126,7 +126,6 @@ export default function LoginPage() {
         <div className="login__header">
           <div className="login__eyebrow">WELCOME BACK</div>
           <h1 className="login__title">LOG<span>_</span>IN</h1>
-          <p className="login__subtitle">// enter your credentials to continue</p>
         </div>
 
         <div className="login__form">
@@ -159,7 +158,6 @@ export default function LoginPage() {
                 value={form.email}
                 onChange={set('email')}
                 onKeyDown={handleKeyDown}
-                placeholder="user@domain.com"
                 autoComplete="email"
               />
             </div>
@@ -176,7 +174,6 @@ export default function LoginPage() {
                 value={form.password}
                 onChange={set('password')}
                 onKeyDown={handleKeyDown}
-                placeholder="••••••••••••"
                 autoComplete="current-password"
               />
               <button
@@ -205,7 +202,7 @@ export default function LoginPage() {
           {/* Submit */}
           <div className="login__submit">
             <button onClick={handleSubmit} disabled={loading}>
-              <span>{loading ? '[ AUTHENTICATING... ]' : '[ AUTHENTICATE →  ]'}</span>
+              <span>{loading ? 'AUTHENTICATING...' : 'AUTHENTICATE →'}</span>
             </button>
           </div>
 
