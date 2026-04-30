@@ -952,3 +952,227 @@ $blue:       #4a9eff;
     }
   }
 }
+
+// ══════════════════════════════════════════════════════════
+// THEME TOGGLE BUTTON
+// ══════════════════════════════════════════════════════════
+.dash__theme-toggle {
+  background: transparent;
+  border:     none;
+  cursor:     pointer;
+  padding:    0;
+  outline:    none;
+
+  &__track {
+    width:           52px;
+    height:          26px;
+    background:      #1e1e1e;
+    border:          1px solid #2a2a2a;
+    border-radius:   13px;
+    position:        relative;
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    padding:         0 6px;
+    box-sizing:      border-box;
+    transition:      background 0.35s ease, border-color 0.35s ease;
+  }
+
+  &__icon {
+    font-size:  12px;
+    line-height: 1;
+    z-index:    1;
+    transition: opacity 0.3s ease;
+
+    &--moon { color: #94a3b8; opacity: 1;   }
+    &--sun  { color: #f0c040; opacity: 0.3; }
+  }
+
+  &__knob {
+    position:      absolute;
+    top:           3px;
+    left:          3px;
+    width:         18px;
+    height:        18px;
+    border-radius: 50%;
+    background:    #444;
+    transition:    left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                   background 0.3s ease,
+                   box-shadow 0.3s ease;
+    z-index:       2;
+  }
+
+  // ── Light ON state ──────────────────────────────────────
+  &--light {
+    .dash__theme-toggle__track {
+      background:   #e8e0d0;
+      border-color: #ccc;
+    }
+    .dash__theme-toggle__knob {
+      left:       31px;
+      background: #f0c040;
+      box-shadow: 0 0 8px rgba(240, 192, 64, 0.6);
+    }
+    .dash__theme-toggle__icon--moon { opacity: 0.3; }
+    .dash__theme-toggle__icon--sun  { opacity: 1;   }
+  }
+
+  &:hover .dash__theme-toggle__track { border-color: $red; }
+}
+
+// ══════════════════════════════════════════════════════════
+// LIGHT THEME  [data-theme="light"] on <html>
+// ══════════════════════════════════════════════════════════
+[data-theme="light"] {
+  .dash {
+    background: #f0ece4;
+
+    &__sidebar {
+      background:   #fff;
+      border-color: #ddd;
+      &::before { background: $red; }
+    }
+
+    &__logo-text   { color: #111; }
+    &__user-name   { color: #111; }
+    &__user-role   { color: #888; }
+    &__nav-label   { color: #bbb; }
+    &__nav-icon    { color: #999; }
+    &__nav-text    { color: #666; }
+
+    &__nav-item {
+      &:hover {
+        background: rgba(0,0,0,0.04);
+        .dash__nav-icon,
+        .dash__nav-text { color: $red; }
+      }
+      &--active {
+        background:        rgba(232,52,28,0.08);
+        border-left-color: $red;
+        .dash__nav-icon,
+        .dash__nav-text { color: $red; }
+      }
+    }
+
+    &__logout {
+      color: #999;
+      &:hover { color: $red; }
+    }
+
+    &__header {
+      background:   #fff;
+      border-color: #ddd;
+    }
+
+    &__breadcrumb {
+      span   { color: #bbb; }
+      strong { color: #111; }
+    }
+
+    &__header-time { color: #999; }
+
+    &__header-btn {
+      background:   #f5f5f5;
+      border-color: #ddd;
+      color:        #666;
+      &:hover {
+        border-color: $red;
+        background:   rgba(232,52,28,0.06);
+        color:        $red;
+      }
+    }
+
+    &__hamburger span { background: #888; }
+
+    &__content { background: #f0ece4; }
+
+    &__page-eyebrow { color: $red; }
+    &__page-title   { color: #111; }
+    &__page-meta    { color: #888; }
+
+    &__btn--ghost {
+      color:        #555;
+      border-color: #ccc;
+      &:hover { border-color: $red; color: $red; }
+    }
+
+    &__stat {
+      background:   #fff;
+      border-color: #e5e0d8;
+      &-label { color: #888; }
+      &-value { color: #111; }
+      &-bar   { background: #eee; }
+    }
+
+    &__panel {
+      background:   #fff;
+      border-color: #e5e0d8;
+    }
+    &__panel-header { border-color: #eee; }
+    &__panel-title  {
+      color: #111;
+      &::before { background: $red; }
+    }
+    &__panel-action {
+      color: #aaa;
+      &:hover { color: $red; }
+    }
+
+    &__chart-bar        { background: #eee; }
+    &__chart-labels span { color: #aaa; }
+
+    &__activity-item  { border-color: #eee; }
+    &__activity-text  {
+      strong { color: #111; }
+      span   { color: #888; }
+    }
+    &__activity-time  { color: #bbb; }
+
+    &__quick-item  { border-color: #eee; }
+    &__quick-label { color: #888; }
+    &__quick-val   { color: #111; }
+    &__quick-bar   { background: #eee; }
+
+    &__table-wrap { background: #fff; border-color: #e5e0d8; }
+    &__table {
+      th { color: #aaa; }
+      td { color: #333; border-color: #f0ece4; }
+      tbody tr:hover { background: rgba(0,0,0,0.02); }
+    }
+
+    &__statusbar {
+      background:   #fff;
+      border-color: #ddd;
+      color:        #bbb;
+    }
+  }
+}
+
+:root {
+  --c-bg-page:        #0a0a0a;
+  --c-bg-panel:       #111111;
+  --c-bg-card:        #111111;
+  --c-bg-input:       #0f0f0f;
+  --c-border:         #1e1e1e;
+  --c-border-hover:   #252525;
+  --c-text-primary:   #f5f0e8;
+  --c-text-secondary: #888888;
+  --c-text-muted:     #666666;
+  --c-text-dim:       #444444;
+  --c-overlay:        rgba(4, 8, 16, 0.95);
+}
+
+// ── Light overrides ───────────────────────────────────────
+[data-theme="light"] {
+  --c-bg-page:        #f0ece4;
+  --c-bg-panel:       #ffffff;
+  --c-bg-card:        #ffffff;
+  --c-bg-input:       #f5f2ee;
+  --c-border:         #e0dbd3;
+  --c-border-hover:   #ccc5b5;
+  --c-text-primary:   #111111;
+  --c-text-secondary: #555555;
+  --c-text-muted:     #888888;
+  --c-text-dim:       #aaaaaa;
+  --c-overlay:        rgba(240, 236, 228, 0.95);
+}
