@@ -207,9 +207,24 @@ function NoteEditor({ note, onSave, onClose }) {
     const [preview, setPreview] = useState(false);
     const [saving, setSaving] = useState(false);
 
-    const [pages, setPages] = useState(() => [
-        { left: note?.content ?? "", right: "" },
-    ]);
+    // const [pages, setPages] = useState(() => [
+    //     { left: note?.content ?? "", right: "" },
+    // ]);
+
+    const [pages, setPages] = useState(() => {
+        if (!note?.content) return [{ left: "", right: "" }];
+
+        const pageTexts = note.content.split(/\n*---page---\n*/);
+        const parsedPages = [];
+        for (let i = 0; i < pageTexts.length; i += 2) {
+            parsedPages.push({
+                left: pageTexts[i] || "",
+                right: pageTexts[i + 1] || "",
+            });
+        }
+
+        return parsedPages.length > 0 ? parsedPages : [{ left: "", right: "" }];
+    });
     const [spread, setSpread] = useState(0);
 
     const leftRef = useRef(null);
@@ -364,7 +379,10 @@ function NoteEditor({ note, onSave, onClose }) {
                 /\*\*(.+?)\*\*/g,
                 '<strong style="color:var(--c-text-primary)">$1</strong>',
             )
-            .replace(/_(.+?)_/g, '<em style="color:var(--c-text-secondary)">$1</em>')
+            .replace(
+                /_(.+?)_/g,
+                '<em style="color:var(--c-text-secondary)">$1</em>',
+            )
             .replace(
                 /^---$/gm,
                 '<hr style="border:none;border-top:1px solid var(--c-border);margin:16px 0"/>',
@@ -488,7 +506,9 @@ function NoteEditor({ note, onSave, onClose }) {
                                         ? "var(--c-overlay)"
                                         : "transparent",
                                     border: `1px solid ${preview ? "#6366f1" : "var(--c-border)"}`,
-                                    color: preview ? "#a5b4fc" : "var(--c-text-muted)",
+                                    color: preview
+                                        ? "#a5b4fc"
+                                        : "var(--c-text-muted)",
                                     fontFamily: "Syne,sans-serif",
                                     transition: "all 0.15s",
                                 }}
@@ -513,8 +533,10 @@ function NoteEditor({ note, onSave, onClose }) {
                                     e.target.style.color = "#ef4444";
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.target.style.borderColor = "var(--c-border)";
-                                    e.target.style.color = "var(--c-text-muted)";
+                                    e.target.style.borderColor =
+                                        "var(--c-border)";
+                                    e.target.style.color =
+                                        "var(--c-text-muted)";
                                 }}
                             >
                                 ✕
@@ -560,7 +582,8 @@ function NoteEditor({ note, onSave, onClose }) {
                                 (e.target.style.borderBottomColor = "#6366f1")
                             }
                             onBlur={(e) =>
-                                (e.target.style.borderBottomColor = "var(--c-border)")
+                                (e.target.style.borderBottomColor =
+                                    "var(--c-border)")
                             }
                         />
 
@@ -581,7 +604,10 @@ function NoteEditor({ note, onSave, onClose }) {
                                 }}
                             >
                                 <span
-                                    style={{ fontSize: 12, color: "var(--c-text-muted)" }}
+                                    style={{
+                                        fontSize: 12,
+                                        color: "var(--c-text-muted)",
+                                    }}
                                 >
                                     Tag:
                                 </span>
@@ -592,7 +618,8 @@ function NoteEditor({ note, onSave, onClose }) {
                                         background: "var(--c-bg-input)",
                                         border: "1px solid var(--c-border)",
                                         color:
-                                            TAG_COLORS[tag]?.color ?? "var(--c-text-primary)",
+                                            TAG_COLORS[tag]?.color ??
+                                            "var(--c-text-primary)",
                                         padding: "5px 10px",
                                         borderRadius: 8,
                                         fontSize: 12,
@@ -615,7 +642,10 @@ function NoteEditor({ note, onSave, onClose }) {
                                 }}
                             >
                                 <span
-                                    style={{ fontSize: 12, color: "var(--c-text-muted)" }}
+                                    style={{
+                                        fontSize: 12,
+                                        color: "var(--c-text-muted)",
+                                    }}
                                 >
                                     Level:
                                 </span>
@@ -688,7 +718,9 @@ function NoteEditor({ note, onSave, onClose }) {
                                 <span
                                     style={{
                                         fontSize: 12,
-                                        color: revision ? "#a5b4fc" : "var(--c-text-muted)",
+                                        color: revision
+                                            ? "#a5b4fc"
+                                            : "var(--c-text-muted)",
                                     }}
                                 >
                                     📌 Mark for revision
@@ -732,7 +764,9 @@ function NoteEditor({ note, onSave, onClose }) {
                                 <span
                                     style={{
                                         fontSize: 12,
-                                        color: pinned ? "#f0c040" : "var(--c-text-muted)",
+                                        color: pinned
+                                            ? "#f0c040"
+                                            : "var(--c-text-muted)",
                                     }}
                                 >
                                     ⭐ Pin note
@@ -937,8 +971,7 @@ function NoteEditor({ note, onSave, onClose }) {
                                         style={{
                                             width: 20,
                                             flexShrink: 0,
-                                            background:
-                                                "var(--c-border)",
+                                            background: "var(--c-border)",
                                             position: "relative",
                                             zIndex: 5,
                                             boxShadow:
@@ -1223,8 +1256,10 @@ function NoteEditor({ note, onSave, onClose }) {
                                 transition: "all 0.15s",
                             }}
                             onMouseEnter={(e) => {
-                                e.target.style.borderColor = "var(--c-text-dim)";
-                                e.target.style.color = "var(--c-text-secondary)";
+                                e.target.style.borderColor =
+                                    "var(--c-text-dim)";
+                                e.target.style.color =
+                                    "var(--c-text-secondary)";
                             }}
                             onMouseLeave={(e) => {
                                 e.target.style.borderColor = "var(--c-border)";
@@ -1287,7 +1322,7 @@ function NoteCard({ note, onEdit, onDelete, onToggleRevision, onTogglePin }) {
     return (
         <div
             style={{
-                background: 'var(--c-bg-panel)',
+                background: "var(--c-bg-panel)",
                 border: `1px solid ${note.pinned ? "rgba(240,192,64,0.35)" : "var(--c-border)"}`,
                 borderRadius: 16,
                 overflow: "hidden",
@@ -1413,7 +1448,9 @@ function NoteCard({ note, onEdit, onDelete, onToggleRevision, onTogglePin }) {
                                     ? "rgba(240,192,64,0.15)"
                                     : "transparent",
                                 border: `1px solid ${note.pinned ? "rgba(240,192,64,0.3)" : "var(--c-border)"}`,
-                                color: note.pinned ? "#f0c040" : "var(--c-text-muted)",
+                                color: note.pinned
+                                    ? "#f0c040"
+                                    : "var(--c-text-muted)",
                                 fontSize: 12,
                                 transition: "all 0.15s",
                             }}
@@ -1512,10 +1549,14 @@ function NoteCard({ note, onEdit, onDelete, onToggleRevision, onTogglePin }) {
                     }}
                 >
                     <div style={{ display: "flex", gap: 14 }}>
-                        <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>
+                        <span
+                            style={{ fontSize: 11, color: "var(--c-text-dim)" }}
+                        >
                             🕒 {timeAgo(note.updated_at)}
                         </span>
-                        <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>
+                        <span
+                            style={{ fontSize: 11, color: "var(--c-text-dim)" }}
+                        >
                             📝 {note.wordCount ?? 0} words
                         </span>
                     </div>
@@ -1530,7 +1571,9 @@ function NoteCard({ note, onEdit, onDelete, onToggleRevision, onTogglePin }) {
                                 ? "rgba(99,102,241,0.15)"
                                 : "transparent",
                             border: `1px solid ${note.revision ? "rgba(99,102,241,0.3)" : "var(--c-border)"}`,
-                            color: note.revision ? "#a5b4fc" : "var(--c-text-muted)",
+                            color: note.revision
+                                ? "#a5b4fc"
+                                : "var(--c-text-muted)",
                             fontFamily: "Syne,sans-serif",
                             transition: "all 0.15s",
                         }}
@@ -1608,7 +1651,10 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                 /\*\*(.+?)\*\*/g,
                 '<strong style="color:var(--c-text-primary);font-weight:700">$1</strong>',
             )
-            .replace(/_(.+?)_/g, '<em style="color:var(--c-text-secondary)">$1</em>')
+            .replace(
+                /_(.+?)_/g,
+                '<em style="color:var(--c-text-secondary)">$1</em>',
+            )
             .replace(
                 /^---$/gm,
                 '<hr style="border:none;border-top:1px solid var(--c-border);margin:18px 0"/>',
@@ -1634,7 +1680,7 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    background: 'var(--c-bg-panel)',
+                    background: "var(--c-bg-panel)",
                     border: "1px solid var(--c-border)",
                     borderRadius: 14,
                     padding: "16px 24px",
@@ -1670,7 +1716,8 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                                 width: i === page ? 24 : 8,
                                 height: 8,
                                 borderRadius: 4,
-                                background: i === page ? "#6366f1" : "var(--c-border)",
+                                background:
+                                    i === page ? "#6366f1" : "var(--c-border)",
                                 border: "none",
                                 cursor: "pointer",
                                 transition: "all 0.3s",
@@ -1682,7 +1729,7 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
             </div>
             <div
                 style={{
-                    background: 'var(--c-bg-panel)',
+                    background: "var(--c-bg-panel)",
                     border: `1px solid ${tc.border}`,
                     borderRadius: 20,
                     overflow: "hidden",
@@ -1792,7 +1839,9 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                             borderTop: "1px solid var(--c-border)",
                         }}
                     >
-                        <div style={{ fontSize: 12, color: "var(--c-text-dim)" }}>
+                        <div
+                            style={{ fontSize: 12, color: "var(--c-text-dim)" }}
+                        >
                             Last updated: {timeAgo(note.updated_at)}
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
@@ -1814,8 +1863,10 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                                     e.target.style.color = "#a5b4fc";
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.target.style.borderColor = "var(--c-border)";
-                                    e.target.style.color = "var(--c-text-muted)";
+                                    e.target.style.borderColor =
+                                        "var(--c-border)";
+                                    e.target.style.color =
+                                        "var(--c-text-muted)";
                                 }}
                             >
                                 ✏️ Edit
@@ -1848,9 +1899,13 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                         padding: "10px 28px",
                         borderRadius: 10,
                         cursor: page === 0 ? "not-allowed" : "pointer",
-                        background: page === 0 ? "var(--c-bg-input)" : "transparent",
+                        background:
+                            page === 0 ? "var(--c-bg-input)" : "transparent",
                         border: `1px solid ${page === 0 ? "var(--c-border)" : "#2a3a4a"}`,
-                        color: page === 0 ? "var(--c-text-dim)" : "var(--c-text-secondary)",
+                        color:
+                            page === 0
+                                ? "var(--c-text-dim)"
+                                : "var(--c-text-secondary)",
                         fontSize: 14,
                         fontFamily: "Syne,sans-serif",
                         transition: "all 0.15s",
@@ -1870,7 +1925,8 @@ function RevisionBook({ notes, onEdit, onToggleRevision }) {
                                 ? "var(--c-bg-input)"
                                 : "linear-gradient(135deg,#6366f1,#ec4899)",
                         border: "none",
-                        color: page === total - 1 ? "var(--c-text-dim)" : "white",
+                        color:
+                            page === total - 1 ? "var(--c-text-dim)" : "white",
                         fontSize: 14,
                         fontFamily: "Syne,sans-serif",
                         transition: "all 0.15s",
@@ -1973,7 +2029,7 @@ function AnalyticsView({ notes }) {
                     <div
                         key={i}
                         style={{
-                            background: 'var(--c-bg-panel)',
+                            background: "var(--c-bg-panel)",
                             border: "1px solid var(--c-border)",
                             borderRadius: 14,
                             padding: "18px 20px",
@@ -1984,7 +2040,8 @@ function AnalyticsView({ notes }) {
                             e.currentTarget.style.boxShadow = `0 4px 20px ${s.color}12`;
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = "var(--c-border)";
+                            e.currentTarget.style.borderColor =
+                                "var(--c-border)";
                             e.currentTarget.style.boxShadow = "none";
                         }}
                     >
@@ -2039,7 +2096,7 @@ function AnalyticsView({ notes }) {
             >
                 <div
                     style={{
-                        background: 'var(--c-bg-panel)',
+                        background: "var(--c-bg-panel)",
                         border: "1px solid var(--c-border)",
                         borderRadius: 16,
                         padding: 24,
@@ -2137,7 +2194,7 @@ function AnalyticsView({ notes }) {
                 </div>
                 <div
                     style={{
-                        background: 'var(--c-bg-panel)',
+                        background: "var(--c-bg-panel)",
                         border: "1px solid var(--c-border)",
                         borderRadius: 16,
                         padding: 24,
@@ -2294,7 +2351,7 @@ function AnalyticsView({ notes }) {
 
             <div
                 style={{
-                    background: 'var(--c-bg-panel)',
+                    background: "var(--c-bg-panel)",
                     border: "1px solid var(--c-border)",
                     borderRadius: 16,
                     padding: 24,
@@ -2406,7 +2463,7 @@ function AnalyticsView({ notes }) {
 
             <div
                 style={{
-                    background: 'var(--c-bg-panel)',
+                    background: "var(--c-bg-panel)",
                     border: "1px solid var(--c-border)",
                     borderRadius: 16,
                     padding: 24,
@@ -2486,7 +2543,9 @@ function AnalyticsView({ notes }) {
                         alignItems: "center",
                     }}
                 >
-                    <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>Less</span>
+                    <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>
+                        Less
+                    </span>
                     {[0, 0.3, 0.6, 1].map((v, i) => (
                         <div
                             key={i}
@@ -2502,7 +2561,9 @@ function AnalyticsView({ notes }) {
                             }}
                         />
                     ))}
-                    <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>More</span>
+                    <span style={{ fontSize: 11, color: "var(--c-text-dim)" }}>
+                        More
+                    </span>
                 </div>
             </div>
         </div>
@@ -2692,7 +2753,7 @@ export default function PageAnalytics() {
                     display: "flex",
                     gap: 4,
                     marginBottom: 24,
-                    background: 'var(--c-bg-panel)',
+                    background: "var(--c-bg-panel)",
                     border: "1px solid var(--c-border)",
                     borderRadius: 12,
                     padding: 4,
@@ -2712,7 +2773,8 @@ export default function PageAnalytics() {
                                     ? "linear-gradient(135deg,#6366f1,#ec4899)"
                                     : "transparent",
                             border: "none",
-                            color: view === v.id ? "white" : "var(--c-text-muted)",
+                            color:
+                                view === v.id ? "white" : "var(--c-text-muted)",
                             fontFamily: "Syne,sans-serif",
                             fontWeight: view === v.id ? 700 : 400,
                             fontSize: 13,
@@ -2777,7 +2839,7 @@ export default function PageAnalytics() {
                                 placeholder="Search notes..."
                                 style={{
                                     width: "100%",
-                                    background: 'var(--c-bg-panel)',
+                                    background: "var(--c-bg-panel)",
                                     border: "1px solid var(--c-border)",
                                     borderRadius: 10,
                                     color: "var(--c-text-primary)",
@@ -2791,7 +2853,8 @@ export default function PageAnalytics() {
                                     (e.target.style.borderColor = "#6366f1")
                                 }
                                 onBlur={(e) =>
-                                    (e.target.style.borderColor = "var(--c-border)")
+                                    (e.target.style.borderColor =
+                                        "var(--c-border)")
                                 }
                             />
                         </div>
@@ -2799,7 +2862,7 @@ export default function PageAnalytics() {
                             value={filterTag}
                             onChange={(e) => setFilterTag(e.target.value)}
                             style={{
-                                background: 'var(--c-bg-panel)',
+                                background: "var(--c-bg-panel)",
                                 border: "1px solid var(--c-border)",
                                 color: "var(--c-text-primary)",
                                 padding: "9px 12px",
@@ -2820,7 +2883,7 @@ export default function PageAnalytics() {
                             value={filterDiff}
                             onChange={(e) => setFilterDiff(e.target.value)}
                             style={{
-                                background: 'var(--c-bg-panel)',
+                                background: "var(--c-bg-panel)",
                                 border: "1px solid var(--c-border)",
                                 color: "var(--c-text-primary)",
                                 padding: "9px 12px",
@@ -2841,7 +2904,7 @@ export default function PageAnalytics() {
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
                             style={{
-                                background: 'var(--c-bg-panel)',
+                                background: "var(--c-bg-panel)",
                                 border: "1px solid var(--c-border)",
                                 color: "var(--c-text-primary)",
                                 padding: "9px 12px",
@@ -2924,7 +2987,12 @@ export default function PageAnalytics() {
                             >
                                 No notes yet
                             </div>
-                            <div style={{ color: "var(--c-text-muted)", fontSize: 14 }}>
+                            <div
+                                style={{
+                                    color: "var(--c-text-muted)",
+                                    fontSize: 14,
+                                }}
+                            >
                                 Start writing your first revision note!
                             </div>
                             <button
@@ -2958,7 +3026,12 @@ export default function PageAnalytics() {
                             }}
                         >
                             <span style={{ fontSize: 40 }}>🔍</span>
-                            <div style={{ color: "var(--c-text-muted)", fontSize: 14 }}>
+                            <div
+                                style={{
+                                    color: "var(--c-text-muted)",
+                                    fontSize: 14,
+                                }}
+                            >
                                 No notes match your search
                             </div>
                             <button

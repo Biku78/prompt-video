@@ -6,7 +6,7 @@ import "../styles/dashboard.scss";
 // ✅ Import each page separately
 import PageProjects from "./Dashboard/PageProjects";
 // Later you can add more like:
-import PageAnalytics from "./dashboard/PageAnalytics";
+import PageAnalytics from "./Dashboard/PageAnalytics";
 // import PageTeam      from './dashboard/PageTeam'
 // import PageSettings  from './dashboard/PageSettings'
 
