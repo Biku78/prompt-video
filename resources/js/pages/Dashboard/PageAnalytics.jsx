@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // ── API config ────────────────────────────────────────────
-const API_BASE = "http://localhost:9000/api";
+const API_BASE = (import.meta.env.VITE_API_URL || "") + "/api";
 
 const api = async (method, path, body = null) => {
     const token = localStorage.getItem("auth_token");

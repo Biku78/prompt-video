@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const API_BASE = "http://localhost:9000/api";
+const API_BASE = (import.meta.env.VITE_API_URL || "") + "/api";
 
 // ── Status config matching your existing design ───────────
 const STATUS_CONFIG = {
